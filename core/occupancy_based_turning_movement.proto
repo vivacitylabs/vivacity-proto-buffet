@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package vivacity.core;
+option go_package = "github.com/vivacitylabs/vivacity-proto-buffet/vivacity/core";
+
+import "vivacity/core/classifying_detector_class_types.proto";
+import "vivacity/core/tracing_context.proto";
+
+message OccupancyBasedTurningMovement {
+  uint32 start_zone_id = 1;
+  uint32 end_zone_id = 2;
+  repeated uint32 intermediate_zone_ids = 3;
+
+  uint64 start_timestamp_microseconds = 4; // first point in start_zone
+  uint64 end_timestamp_microseconds = 5;   // last point in end_zone
+
+  core.TracingContext tracing_ctx = 6;
+
+  reserved 7 to 9;
+
+  core.ClassifyingDetectorClassTypes class_id = 10;
+
+}

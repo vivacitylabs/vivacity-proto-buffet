@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package vivacity.core;
+option go_package = "github.com/vivacitylabs/vivacity-proto-buffet/vivacity/core";
+
+import "vivacity/core/classifying_detector_class_types.proto";
+import "vivacity/core/tracing_context.proto";
+
+message ClassSpeed {
+  core.ClassifyingDetectorClassTypes class_id = 1;
+  float mean_real_world_space_speed_meters_per_second = 2;
+  float mean_image_space_speed_points_per_second = 3;
+}
+
+message ZonalWindowedSpeed {
+  uint32 zone_id = 1;
+  reserved 2;
+  uint64 window_start_timestamp_microseconds = 3;
+  uint32 window_length_microseconds = 4;
+  repeated ClassSpeed speeds = 5;
+
+  core.TracingContext tracing_ctx = 6;
+}

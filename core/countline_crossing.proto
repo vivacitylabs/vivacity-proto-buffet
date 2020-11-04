@@ -1,10 +1,11 @@
 syntax = "proto3";
 
 package vivacity.core;
-option go_package = "github.com/vivacitylabs/supermario/vivacity/core";
+option go_package = "github.com/vivacitylabs/vivacity-proto-buffet/vivacity/core";
 
 import "vivacity/core/point.proto";
 import "vivacity/core/tracing_context.proto";
+import "vivacity/core/classifying_detector_class_types.proto";
 
 message CountlineCrossing {
     enum CrossingsDirection {
@@ -16,10 +17,16 @@ message CountlineCrossing {
     CrossingsDirection crossings_direction = 2; // required
     uint64 crossing_timestamp_microseconds = 3; // required
     core.TracingContext tracing_ctx = 4;
+    reserved 5 to 7;
+    core.ClassifyingDetectorClassTypes class_id = 8;
+
+    reserved 9;
 }
 
 message Countline {
     uint32 countline_id = 1;
     repeated core.Point points = 2;
     string detection_box_poi = 3;
+
+    reserved 4 to 6;
 }
