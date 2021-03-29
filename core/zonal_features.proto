@@ -1,11 +1,12 @@
 syntax = "proto3";
 
 package vivacity.core;
-option go_package = "github.com/vivacitylabs/supermario/vivacity/core";
+option go_package = "github.com/vivacitylabs/vivacity-proto-buffet/vivacity/core";
 
 import "vivacity/core/classifying_detector_class_types.proto";
 import "vivacity/core/tracing_context.proto";
 import "vivacity/core/vector.proto";
+import "vivacity/core/movement.proto";
 
 message ZonalFeatures {
     uint32 vision_program_id = 1; // deprecated - backwards compatible
@@ -18,6 +19,7 @@ message ZonalFeatures {
     float average_distance_scalar = 9; // average across all classes
     core.Vector average_displacement = 10; // average across all classes
     uint32 aggregated_stopped_vehicles_count = 11; // aggregate across all classes
+    core.Movement average_movement = 12; // aggregate across all classes
     core.TracingContext tracing_ctx = 5; // 5 to be backwards compatible
 }
 
@@ -29,4 +31,5 @@ message ClassFeatures {
     float average_distance_scalar = 5; // average for class
     core.Vector average_displacement = 6; // average for class
     uint32 stopped_vehicles_count = 7; // aggregate for class
+    core.Movement average_movement = 8; // aggregate for class
 }

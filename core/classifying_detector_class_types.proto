@@ -3,27 +3,51 @@ syntax = "proto3";
 package vivacity.core;
 option go_package = "github.com/vivacitylabs/vivacity-proto-buffet/vivacity/core";
 
+message ClassConfidence {
+    core.ClassifyingDetectorClassTypes class_type = 1; // required
+    float class_confidence = 2;
+}
+
 enum ClassifyingDetectorClassTypes {
     UNKNOWN_CLASS_TYPE = 0;
-    PEDESTRIAN = 1;
-    CYCLIST = 2;
-    MOTORBIKE = 3;
-    CAR = 4;
-    TAXI = 5;
-    VAN = 6;
-    MINIBUS = 7;
-    BUS = 8;
-    RIGID = 9;
-    TRUCK = 10;
-    EMERGENCY_CAR = 11;
-    EMERGENCY_VAN = 12;
-    FIRE_ENGINE = 13;
-    reserved 14 to 16;
-    POWERED_WATERCRAFT = 17;
-    UNPOWERED_WATERCRAFT = 18;
-    reserved 19, 20;
-    WHEELCHAIR = 21;
-    PUSHCHAIR = 22;
+    PEDESTRIAN = 1; // Traffic13 + Traffic32 + CRT11
+    CYCLIST = 2; // Traffic13 + Traffic32 + CRT11
+    MOTORBIKE = 3; // Traffic13 + Traffic32 + CRT11
+    CAR = 4; // Traffic13 + Traffic32
+    TAXI = 5; // Traffic13 + Traffic32 (Hackney Cab)
+    VAN = 6; // Traffic13 + Traffic32
+    MINIBUS = 7; // Traffic13 + Traffic32
+    BUS = 8; // Traffic13 + Traffic32 (Public Bus)
+    RIGID = 9; // Traffic13 + Traffic32
+    TRUCK = 10; // Traffic13 + Traffic32
+    EMERGENCY_CAR = 11; // Traffic13 + Traffic32
+    EMERGENCY_VAN = 12; // Traffic13 + Traffic32
+    FIRE_ENGINE = 13; // Traffic13 + Traffic32
+    WHEELCHAIR = 14; // Traffic32 + CRT11
+    MOBILITY_SCOOTER = 15; // Traffic32
+    PUSHCHAIR = 16; // Traffic32 + CRT11
+    JOGGER = 17; // Traffic32 + CRT11
+    E_SCOOTER = 18; // Traffic32 + CRT11
+    PUSH_SCOOTER = 19; // Traffic32
+    RENTAL_BIKE = 20; // Traffic32
+    CARGO_COURIER_BIKE = 21; // Traffic32
+    TAXI_ELECTRIC = 22; // Traffic32 (Electric Hackney Cab)
+    TAXI_OTHER = 23; // Traffic32
+    VAN_SMALL = 24; // Traffic32
+    VAN_LUTON = 25; // Traffic32
+    BUS_COACH = 26; // Traffic32
+    BUS_LONDON = 27; // Traffic32
+    TOWED_TRAILER = 28; // Traffic32
+    TRACTOR = 29; // Traffic32
+    AGRICULTURAL_VEHICLE = 30; // Traffic32
+    HORSE_RIDER = 31; // Traffic32 + CRT11
+    DOG = 32; // CRT11 + Traffic32
+
+    LICENSE_PLATE = 60; // Plate detector
+
+    POWERED_WATERCRAFT = 70; // CRT11
+    UNPOWERED_WATERCRAFT = 71; // CRT11
 
     reserved 100 to 135;
+    reserved 10000 to 10050;
 }
