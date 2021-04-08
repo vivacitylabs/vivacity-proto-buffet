@@ -3,6 +3,11 @@ syntax = "proto3";
 package vivacity.core;
 option go_package = "github.com/vivacitylabs/vivacity-proto-buffet/vivacity/core";
 
+message ClassConfidence {
+    core.ClassifyingDetectorClassTypes class_type = 1; // required
+    float class_confidence = 2;
+}
+
 enum ClassifyingDetectorClassTypes {
     UNKNOWN_CLASS_TYPE = 0;
     PEDESTRIAN = 1;
@@ -18,12 +23,31 @@ enum ClassifyingDetectorClassTypes {
     EMERGENCY_CAR = 11;
     EMERGENCY_VAN = 12;
     FIRE_ENGINE = 13;
-    reserved 14 to 16;
-    POWERED_WATERCRAFT = 17;
-    UNPOWERED_WATERCRAFT = 18;
-    reserved 19, 20;
-    WHEELCHAIR = 21;
-    PUSHCHAIR = 22;
+    WHEELCHAIR = 14;
+    MOBILITY_SCOOTER = 15;
+    PUSHCHAIR = 16;
+    JOGGER = 17;
+    E_SCOOTER = 18;
+    PUSH_SCOOTER = 19;
+    RENTAL_BIKE = 20;
+    CARGO_COURIER_BIKE = 21;
+    TAXI_ELECTRIC = 22;
+    TAXI_OTHER = 23;
+    VAN_SMALL = 24;
+    VAN_LUTON = 25;
+    BUS_COACH = 26;
+    BUS_LONDON = 27;
+    TOWED_TRAILER = 28;
+    TRACTOR = 29;
+    AGRICULTURAL_VEHICLE = 30;
+    HORSE_RIDER = 31;
+    DOG = 32;
+
+    LICENSE_PLATE = 60;
+
+    POWERED_WATERCRAFT = 70;
+    UNPOWERED_WATERCRAFT = 71;
 
     reserved 100 to 135;
+    reserved 10000 to 10050;
 }

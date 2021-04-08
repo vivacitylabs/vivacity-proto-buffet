@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package vivacity.core;
+option go_package = "github.com/vivacitylabs/vivacity-proto-buffet/vivacity/core";
+
+import "vivacity/core/vector.proto";
+
+message Movement {
+    Displacements per_frame = 1;
+    Displacements per_second = 2; // displacement/time
+
+    // sum(displacements) / (latest - earliest frame time seconds)
+    Displacements short_term_average = 3;
+
+    // sum(displacements) / (latest - earliest frame time seconds)
+    Displacements long_term_average = 4;
+}
+
+message Displacements {
+    core.VectorF image_space = 1;
+    core.VectorF undistorted = 2;
+    core.VectorF gps = 3;
+    core.VectorF local_cartesian_meters = 4;
+}

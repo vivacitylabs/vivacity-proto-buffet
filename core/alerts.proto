@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package vivacity.core;
+option go_package = "github.com/vivacitylabs/vivacity-proto-buffet/vivacity/core";
+import "vivacity/core/tracing_context.proto";
+
+// NOTE - the messages below may be subject to change.
+
+// This is a protobuf representation of the JSON messages which come from the webhook of AlertManager
+// See https://github.com/prometheus/alertmanager/blob/master/notify/webhook/webhook.go Message struct
+message AlertManagerWebHookMessage {
+    string receiver = 1;
+    string status = 2;
+    repeated AlertManagerAlert alerts = 3;
+    map<string, string> groupLabels = 4;
+    map<string, string>  commonLabels = 5;
+    map<string, string>  commonAnnotations = 6;
+    string externalURL = 7;
+    string version = 8;
+    string groupKey = 9;
+    uint64 truncatedAlerts = 10;
+}
+
+message AlertManagerAlert {
+    string status = 1;
+    map<string, string> labels = 2;
+    map<string, string> annotations = 3;
+    uint64 startsAt = 4; // These are nanosecond timestamps - the unit can't be included in the name because it wouldn't match the alertmanager JSON schema
+    uint64 endsAt = 5;
+    string generatorURL = 6;
+    string fingerprint = 7;
+}
+
+
+
+enum AlertNotificationStatus {
+    UNKNOWN_ALERT_NOTIFICATION_STATUS = 0;
+    ALERT_NOTIFICATION_FIRING = 1;
+    ALERT_NOTIFICATION_RESOLVED = 2;
+}
+
+message AlertNotificationBatch {
+    repeated AlertNotification alerts = 1;
+    AlertNotificationStatus status = 2; //
+    core.TracingContext tracing_ctx = 3;
+}
+
+message AlertNotification {
+    enum AlertType {
+        UNKNOWN = 0;
+        ZONAL_SPEED = 1;
+        ZONAL_OCCUPANCY = 2;
+        ZONAL_FLOW = 3;
+        ZONAL_CONGESTION = 4;
+    }
+    string fingerprint = 1;
+    uint32 alert_rule_id = 2;
+    AlertType type = 3;
+    uint64 start_time_micro = 4;
+    uint64 end_time_micro = 5;
+    string query = 6;
+    AlertNotificationStatus status = 7;
+    ZonalSpeedAlertNotification speed = 8;
+    ZonalOccupancyAlertNotification occupancy = 9;
+    ZonalFlowAlertNotification flow = 10;
+    ZonalCongestionNotification congestion = 11;
+}
+
+message ZonalSpeedAlertNotification {
+    enum ThresholdType {
+        SPEED_ABOVE_THRESHOLD = 0;
+        SPEED_BELOW_THRESHOLD = 1;
+    }
+    ThresholdType type = 1;
+    uint32 zone_id = 2;
+    double speed_meters_per_second = 4;
+    double threshold = 5;
+}
+
+message ZonalOccupancyAlertNotification {
+    enum ThresholdType {
+        OCCUPANCY_ABOVE_THRESHOLD = 0;
+        OCCUPANCY_BELOW_THRESHOLD = 1;
+    }
+    ThresholdType type = 1;
+    uint32 zone_id = 2;
+    double occupancy_value = 4;
+    double threshold = 5;
+}
+
+message ZonalFlowAlertNotification {
+    enum ThresholdType {
+        FLOW_ABOVE_THRESHOLD = 0;
+        FLOW_BELOW_THRESHOLD = 1;
+    }
+    ThresholdType type = 1;
+    uint32 zone_id = 2;
+    double flow_value = 4;
+    double threshold = 5;
+}
+
+message ZonalCongestionNotification {
+    enum CongestionType {
+        FLOW_AND_OCCUPANCY_BASED = 0;
+        SPEED_AND_OCCUPANCY_BASED = 1;
+    }
+    CongestionType type = 1;
+    uint32 zone_id = 2;
+}
