@@ -107,3 +107,10 @@ message BrokenTrackStitchingMessage {
 message TR2505ADetection {
     bool detect = 1; //only required field
 }
+
+message SCOOTLoopDetection {
+    bool detect1 = 1; //oldest sample of the 1sec period
+    bool detect2 = 2;
+    bool detect3 = 3;
+    bool detect4 = 4; //most recent sample of the 1sec period
+}
