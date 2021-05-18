@@ -39,7 +39,7 @@ message TrackHead {  // TrackedBox
     repeated uint32 occupancy_zone_id = 5;
     repeated core.CountlineCrossing countline_crossings = 6; // optional, filled by countline_crossing
     uint64 frame_time_microseconds = 7; // optional
-    core.Vector displacement = 8; // deprecated, use movement messages below
+    reserved 8; // deprecated, use movement messages below
     bool is_stopped = 9;
     Movement movement = 10;
     core.ClassifyingDetectorClassTypes track_class = 11;

@@ -28,8 +28,8 @@ message ClassFeatures {
     uint32 occupancy = 2; // aggregate for class
     uint32 crossings_clockwise = 3; // aggregate for class
     uint32 crossings_anticlockwise = 4; // aggregate for class
-    float average_distance_scalar = 5; // average for class
-    core.Vector average_displacement = 6; // average for class
+    reserved 5; // deprecated, use average_movement
+    reserved 6; // deprecated, use average_movement
     uint32 stopped_vehicles_count = 7; // aggregate for class
     core.Movement average_movement = 8; // aggregate for class
 }
