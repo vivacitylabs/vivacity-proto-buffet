@@ -16,8 +16,8 @@ message ZonalFeatures {
     uint32 aggregated_occupancy = 6; // aggregate across all classes
     uint32 aggregated_crossings_clockwise = 7; // aggregate across all classes
     uint32 aggregated_crossings_anticlockwise = 8; // aggregate across all classes
-    float average_distance_scalar = 9; // average across all classes
-    core.Vector average_displacement = 10; // average across all classes
+    reserved 9; // deprecated, use average_movement
+    reserved 10; // deprecated, use average_movement
     uint32 aggregated_stopped_vehicles_count = 11; // aggregate across all classes
     core.Movement average_movement = 12; // aggregate across all classes
     core.TracingContext tracing_ctx = 5; // 5 to be backwards compatible
