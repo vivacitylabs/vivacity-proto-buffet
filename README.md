@@ -60,3 +60,6 @@ This should generate a folder called `vivacity` with the `*.proto` files and gen
 #### **<u>Javascript / Typescript</u>** <a name="js-ts"></a>
 * `ts-protoc-gen` >= 0.12.0
     * **Required**. Install with `yarn add ts-protoc-gen`
+
+## Vivacity Message Schema
+![alt text](docs/images/dtf.png "Detector tracker frame message structure")
