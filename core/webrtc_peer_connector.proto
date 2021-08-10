@@ -1,0 +1,168 @@
+syntax = "proto3";
+
+package vivacity.core;
+option go_package = "github.com/vivacitylabs/proto-buffet/vivacity/core";
+
+message WebRTCSignalling {
+    enum Type {
+        UNKNOWN = 0;
+        ADD = 1;
+        REMOVE = 2;
+        SESSION_NEGOTIATION = 3;
+        STATE_UPDATE = 4;
+        ERROR = 5;
+        REQUEST_PEER_BY_PRINCIPAL_ID = 6;
+    }
+    Type type = 1;
+    fixed64 sender_id = 2 [jstype = JS_STRING];
+    fixed64 peer_id = 3 [jstype = JS_STRING];
+    string peer_name = 10;
+    WebRTCAddPeerConnection add_peer_connection = 4;
+    WebRTCRemovePeerConnection remove_peer_connection = 5;
+
+    WebRTCSessionNegotiation session_negotiation = 6;
+    WebRTCStateUpdate state_update = 7;
+    WebRTCConnectionError error = 8;
+    WebRTCRequestPeerByPrincipalID request_peer = 9;
+}
+
+message WebRTCAddPeerConnection {
+    repeated WebRTCDataChannelRequest data_channels = 1;
+    repeated WebRTCTrackRequest tracks = 2;
+    repeated string allowed_remote_data_channels = 3;
+    // Only one peer should create the offer - in our case, the signalling server will choose which side and tell them to offer
+    bool create_offer = 4;
+    repeated WebRTCICEServer ice_servers = 5;
+}
+
+message WebRTCRemovePeerConnection {
+}
+
+message WebRTCICEServer {
+
+    message OAuthCredential {
+        string mac_key = 1;
+        string access_token = 2;
+    }
+
+    enum ICECredentialType {
+        PASSWORD = 0;
+        OAUTH = 1;
+    }
+
+    repeated string urls = 1;
+    string username = 2;
+
+    oneof credential {
+        string password = 3;
+        OAuthCredential oauth = 4;
+    }
+
+    ICECredentialType credential_type = 5;
+}
+
+message WebRTCTrackRequest {
+    enum PayloadType {
+        PCMU = 0;
+        PCMA = 8;
+        G722 = 9;
+        OPUS = 111;
+        VP8 = 96;
+        VP9 = 98;
+        H264 = 102;
+    }
+    string track_id = 1;
+    string track_label = 2;
+    PayloadType payload_type = 3;
+}
+
+message WebRTCDataChannelRequest {
+    string protocol = 1;
+    string channel_label = 2;
+    uint32 chunk_size = 3; // If not 0, then messages will be chunked to this size in bytes, and enveloped in a DataChannelDataChunk message, and will be expected to be read as DataChannelDataChunks
+    bool unordered = 4; // This determines whether to use blocking, sequenced (TCP-style) delivery, or out of order, unreliable (UDP-style) delivery
+    uint32 max_packet_lifetime_ms = 5; //represents the length of the time window (msec) during which transmissions and retransmissions may occur in unreliable mode.
+    uint32 max_retransmits = 6; // represents the length of the time window (msec) during which transmissions and retransmissions may occur in unreliable mode.
+}
+
+message WebRTCDataChannelDataChunk {
+    uint32 id = 1;
+    uint32 fragment_number = 2; // 0 indexed
+    uint32 total_fragments = 3;
+    bytes data = 4;
+}
+
+message WebRTCICECandidate {
+    string candidate = 1;
+    uint32 sdpMLineIndex = 2;
+}
+
+message WebRTCSDP {
+    enum Type {
+        UNKNOWN = 0;
+        SDPTypeOffer = 1;
+        SDPTypePranswer = 2;
+        SDPTypeAnswer = 3;
+        SDPTypeRollback = 4;
+    }
+    string sdp = 1;
+    Type type = 2;
+}
+
+message WebRTCSessionNegotiation {
+    WebRTCSDP sdp = 1;
+    WebRTCICECandidate ice_candidate = 2;
+}
+
+message WebRTCConnectionError {
+    enum Type {
+        UNKNOWN = 0;
+        FAILED_TO_CLOSE_PEER_CONNECTION = 1;
+        FAILED_TO_ADD_ICE_CANDIDATE = 2;
+        FAILED_TO_SET_REMOTE_DESCRIPTION = 3;
+        FAILED_TO_SET_LOCAL_DESCRIPTION = 4;
+        FAILED_TO_CREATE_SDP_OFFER = 5;
+        FAILED_TO_CREATE_SDP_ANSWER = 6;
+        NO_SUCH_PEER_ID = 7;
+        FAILED_TO_CREATE_PEER_CONNECTION = 8;
+        NO_SUCH_VIDEO_SOURCE = 9;
+        FAILED_TO_CREATE_TRACK = 10;
+        FAILED_TO_ADD_TRACK = 11;
+        NO_SUCH_DATA_CHANNEL_SOURCE_SINK = 12;
+        FAILED_TO_CREATE_DATA_CHANNEL = 13;
+        NO_SUCH_VIDEO_SINK = 14;
+        FAILED_TO_SEND_RTCP_PLI = 16;
+        VIDEO_SINK_ALREADY_IN_USE = 17;
+        FAILED_TO_READ_REMOTE_TRACK = 18;
+        UNAUTHORISED_ACCESS_TO_DATA_CHANNEL = 19;
+        DATA_CHANNEL_ERROR = 20;
+        AUTHENTICATION_FAILED = 21;
+        UNAUTHORIZED = 22;
+        NO_SUCH_PRINCIPAL_ID = 23;
+    }
+
+    Type type = 1;
+    string error = 2;
+    string label = 3;
+}
+
+message WebRTCStateUpdate {
+    enum Type {
+        UNKNOWN = 0;
+        ICE_CONNECTION_STATE = 1;
+        SIGNALLING_STATE = 2;
+        PEER_CONNECTION_STATE = 3;
+        ICE_GATHERER_STATE = 4;
+        DATA_CHANNEL_STATE = 5;
+    }
+    Type type = 1;
+    string state = 2;
+    string data_channel_label = 3;
+}
+
+message WebRTCRequestPeerByPrincipalID {
+    string principal_id = 1;
+    string jwt = 2;
+    repeated WebRTCDataChannelRequest data_channels = 3;
+    repeated WebRTCTrackRequest tracks = 4;
+}
