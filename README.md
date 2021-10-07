@@ -112,6 +112,18 @@ Key fields:
 - `hashed_anpr_plate`:  hashed contents of a license plate.
 - `anpr_plate`: raw contents of a license plate.
 
+### Point
+A message encoding the position of a point in image space and/or gps space.
+
+Key fields:
+- `x`, `y`: the x and y coordinates in the chosen coordinate system. 
+- `undistorted`: the position when correcting for lens distortion
+- `gps`: the position when transforming the image space coordinates into real-world GPS coordinates on a ground-plane
+- `local_cartesian_meters`: the distance in meters from a given point, eg the location of the sensor, or a stopline.
+
+![point](docs/images/points.png?raw=true)
+
+
 ### Zonal Features
 This message contains data from a zone-oriented (rather than detected-object-oriented) perspective. Ie: it's a list of things happening inside a zone (eg a pedestrian waiting area), rather than a list of things that are true about an object (eg a pedestrian walking on a path).
 
@@ -142,5 +154,8 @@ A message to communicate a tracked object crossing from one side of a 2D "countl
 Key fields:
 - `countline_id`: a globally unique ID of the countline which has been crossed. 
 - `crossings_direction` 
+
+![countline crossing](docs/images/countline_crossing.png?raw=true)
+
 
 ## Use cases
