@@ -108,7 +108,9 @@ Note that the `Point` message is used repeatedly within this message, and may en
 Key fields:
 - `top_left`, `bottom_right`, `center_center`, `center_center`, `top_right`, `bottom_left`: the locations of the various points of the detection box containing the object.
 - `detection_class`: the classification of the object. Note that if this `DetectionBox` message is within a TrackHead, this will be the same as the `track_class` from the outer message.
-- `occupancy_zone_points`: points which are located within a detection box which are used to determine whether a detected 
+- `occupancy_zone_points`: points which are located within a detection box which are used to determine whether a detected object counts as "within" a zone or not. Eg: 6 points located in the lower half of a vechicle's detection box, 4 of which must be within a zone to contribute to that zone's occupancy.
+- `hashed_anpr_plate`:  hashed contents of a license plate.
+- `anpr_plate`: raw contents of a license plate.
 
 ### Zonal Features
 This message contains data from a zone-oriented (rather than detected-object-oriented) perspective. Ie: it's a list of things happening inside a zone (eg a pedestrian waiting area), rather than a list of things that are true about an object (eg a pedestrian walking on a path).
@@ -134,5 +136,11 @@ Used to encode date on a per-class basis in a ZonalFeatures message.
 - `stopped_vehicles_count`: total number of stopped objects of this `class_type` within the zone.
 - `average_movement`: *Movement* message containing an average across all objects of this `class_type` within the zone. 
 
+### Countline Crossing
+A message to communicate a tracked object crossing from one side of a 2D "countline" to the other.
+
+Key fields:
+- `countline_id`: a globally unique ID of the countline which has been crossed. 
+- `crossings_direction` 
 
 ## Use cases
