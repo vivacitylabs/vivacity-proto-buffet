@@ -168,9 +168,9 @@ Messages and fields sent:
 └── DetectorTrackerFrame
     ├── frame_time_microseconds
     ├── vision_program_id
-    ├── zone_oriented_features
+    ├── zone_oriented_features [repeated]
     │   ├── zone_id
-    │   ├── class_features
+    │   ├── class_features [repeated]
     │   │   ├── class_type
     │   │   ├── occupancy
     │   │   ├── stopped_vehicles_count    
