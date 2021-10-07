@@ -98,7 +98,17 @@ Key fields:
 - `frame_time_microseconds`: Unix time that the frame was processed, measured in microseconds. If this Track Head is within a DTF, this is the same as the `frame_time_microseconds` within the outer message.
 - `is_stopped`: flag which is set true when the object is deemed to have stopped moving.
 - `movement`: message containing data on the movement of the detected object (speeds, directions etc). See below.
-- `track_class`: The classification of the detected object. 
+- `track_class`: The classification of the detected object.
+
+### Detection Box
+A message containing information about the position of the detected object.
+
+Note that the `Point` message is used repeatedly within this message, and may encode the location in either image space or real (GPS) space.
+
+Key fields:
+- `top_left`, `bottom_right`, `center_center`, `center_center`, `top_right`, `bottom_left`: the locations of the various points of the detection box containing the object.
+- `detection_class`: the classification of the object. Note that if this `DetectionBox` message is within a TrackHead, this will be the same as the `track_class` from the outer message.
+- `occupancy_zone_points`: points which are located within a detection box which are used to determine whether a detected 
 
 ### Zonal Features
 This message contains data from a zone-oriented (rather than detected-object-oriented) perspective. Ie: it's a list of things happening inside a zone (eg a pedestrian waiting area), rather than a list of things that are true about an object (eg a pedestrian walking on a path).
