@@ -93,13 +93,36 @@ Key fields:
 - `track_number`: A unique ID for the detected object that lasts for the lifetime of the object within the field of view. 
 - `is_predicted`: A flag indicating whether the computer vision system is predicting this Track Head and not directly observing it. For example, may be set `true` if an object is temporarily occluded by another object passing in-front of it - causing the sensor to momentarily lose sight of it.
 - `last_detected_timestamp_microseconds`: if `is_predicted` is `true`, this is the timestamp of the previous non-predicted detection of the object.
-- `occupancy_zone_id`: a list of the zones that the object is currently within.
+- `occupancy_zone_id`: a list of the zones that the object is currently within. Zone IDs are globally unique. 
 - `countline_crossings`: a list of the countlines that the track has crossed since it was first instantiated.
 - `frame_time_microseconds`: Unix time that the frame was processed, measured in microseconds. If this Track Head is within a DTF, this is the same as the `frame_time_microseconds` within the outer message.
 - `is_stopped`: flag which is set true when the object is deemed to have stopped moving.
 - `movement`: message containing data on the movement of the detected object (speeds, directions etc). See below.
 - `track_class`: The classification of the detected object. 
 
-### Zone Oriented Features
+### Zonal Features
+This message contains data from a zone-oriented (rather than detected-object-oriented) perspective. Ie: it's a list of things happening inside a zone (eg a pedestrian waiting area), rather than a list of things that are true about an object (eg a pedestrian walking on a path).
+
+Key fields:
+- `vision_program_id`: Unique identifier of the "vision program" that emitted this DTF. Note: multiple computer vision programs may run on a single piece of hardware - so this is not necessarily the unique ID of the hardware. If this Zonal Features message is within a DTF, this is the same as the `vision_program_id` in the outer message.
+- `zone_id`: A globally unique ID for the zone in question.
+- `timestamp_micro`: Unix time that the frame was processed, measured in microseconds. If this Zonal Feautures message is within a DTF, this is the same as the `frame_time_microseconds` within the outer message.
+- `class_features`: A list of `ClassFeatures` messages - each one providing information on a particular class of object detected within the zone. 
+- `aggregated_occupancy`: total number of detected objects within the zone, aggregated across all classes.
+- `aggregated_crossings_clockwise`: total number of crossings of countlines that have occurred within the zone in the clockwise direction, since the previous message. Aggregated across all classes.
+- `aggregated_crossings_anticlockwise`: total number of crossings of countlines that have occurred within the zone in the anitclockwise direction, since the previous message. Aggregated across all classes.
+See *Countline Crossings* for description of crossing direction logic.
+- `aggregated_stopped_vehicles_count`: total number of stopped objects within the zone - aggregated across all detection classes.
+- `average_movement`: *Movement* message containing an average across all objects within the zone. 
+
+### Class Features
+Used to encode date on a per-class basis in a ZonalFeatures message.
+- `class_type`: the type of the class in question
+- `occupancy`: the total number of objects of this class within the zone
+- `crossings_clockwise`: number of crossings of countlines for objects of this `class_type` that have occurred within the zone in the clockwise direction, since the previous message.
+- `crossings_anticlockwise`: number of crossings of countlines for objects of this `class_type` that have occurred within the zone in the anitclockwise direction, since the previous message.
+- `stopped_vehicles_count`: total number of stopped objects of this `class_type` within the zone.
+- `average_movement`: *Movement* message containing an average across all objects of this `class_type` within the zone. 
+
 
 ## Use cases
