@@ -95,6 +95,11 @@ Key fields:
 - `last_detected_timestamp_microseconds`: if `is_predicted` is `true`, this is the timestamp of the previous non-predicted detection of the object.
 - `occupancy_zone_id`: a list of the zones that the object is currently within.
 - `countline_crossings`: a list of the countlines that the track has crossed since it was first instantiated.
-- `frame_time_microseconds`
+- `frame_time_microseconds`: Unix time that the frame was processed, measured in microseconds. If this Track Head is within a DTF, this is the same as the `frame_time_microseconds` within the outer message.
+- `is_stopped`: flag which is set true when the object is deemed to have stopped moving.
+- `movement`: message containing data on the movement of the detected object (speeds, directions etc). See below.
+- `track_class`: The classification of the detected object. 
+
+### Zone Oriented Features
 
 ## Use cases
