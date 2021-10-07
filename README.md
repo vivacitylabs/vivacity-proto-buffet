@@ -159,3 +159,35 @@ Key fields:
 
 
 ## Use cases
+The following use cases are provided as examples of ways in which the schema has been employed in the communication of detection data.
+
+
+### Use Case 1: Sensors mounted above signal heads, send real-time zonal occupancy messages to a traffic signal controller via a local ethernet network
+Messages and fields sent:
+```bash
+└── DetectorTrackerFrame
+    ├── frame_time_microseconds
+    ├── vision_program_id
+    ├── zone_oriented_features
+    │   ├── zone_id
+    │   ├── class_features
+    │   │   ├── class_type
+    │   │   ├── occupancy
+    │   │   ├── stopped_vehicles_count    
+    │   ├── aggregated_occupancy
+    |   └── aggregated_stopped_vehicles_count
+```
+Phyiscal and Transport layers: DTFs are sent via TCP connection over an ethernet network. Messages are sent at a fixed rate of 10Hz.
+
+Zones are configured for:
+- pedestrian waiting areas
+- pedestrian on-crossing areas
+- cycle lane approaches
+- bus lane approaches
+- vehicle approaches
+
+The traffic signal controller receives the data and uses the classified occupancy values to determine signal timings, eg: hold the "green man" while there is a non-zero pedestrian occupancy in the on-crossing zone, or insert a demand for a cyclist phase if cyclists are detected approaching the junction. 
+
+### Use Case 2: Sensors mounted above signal heads, send real-time GPS locations to a central algorithm, via a council-owned ethernet network and fibre backhaul
+
+### Use Case 3: Sensors mounted on lamp columns, send instantaneous countline crossing events via 4G to a cloud-based central signal coordinator
