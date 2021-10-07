@@ -63,3 +63,38 @@ This should generate a folder called `vivacity` with the `*.proto` files and gen
 
 ## Vivacity Message Schema
 ![alt text](docs/images/dtf.png "Detector tracker frame message structure")
+
+## Message Types
+### Summary
+The protobuf schema organises messages into a hierarchy which is visualised graphically in the image above. Protobuf permits fields not marked as `required` to be omitted. Therefore even though the schema has a relatively deep "tree" of nested messages, it is possible to send relatively concise messages if only particular features are required.
+
+Depending upon the use case, one or more nested messages may be sent, with a variety of fields populated.
+
+## Message Descriptions
+### Detector Tracker Frame
+As can be seen graphically in the image above, the Detector Tracker Frame (DTF) is the outermost message type. It is the fundamental output of the Vivacity computer vision system and contains most other important messages types within it.
+
+It contains both important engineering values (zonal occupancy, detection classification, object position etc) as well as metadata such as the id of the sending system and timestamp.
+
+The Vivacity computer vision system emits one DTF for every "frame" of video which is processed. A typical Vivacity sensor might run at 15 frames per second, with all detection inference and processing being performed immediately after a frame is captured. 15 times per second a DTF is emitted, populated with all the features which are enabled on that sensor. 
+
+Description of key fields: 
+
+- `frame_time_microseconds`: Unix time that the frame was processed, measured in microseconds
+- `vision_program_id`: Unique identifier of the "vision program" that emitted this DTF. Note: multiple computer vision programs may run on a single piece of hardware - so this is not necessarily the unique ID of the hardware.
+- `track_heads`: a list of Track Head messages, one for each tracked object within view (see below)
+- `zone_oriented_features` a list of Zonal Features messages, one for each zone configured (see below)
+
+### Track Head
+The Vivacity Sensor tracks detected object through its field of view. A track is made up of multiple individual detections - the most recent is known as the Track Head - and can be assumed to contain the most up to date information about the detected object, eg: its current location. 
+
+Key fields:
+- `detection_box`: A `DetectionBox` message containing information about the position of the detected object.
+- `track_number`: A unique ID for the detected object that lasts for the lifetime of the object within the field of view. 
+- `is_predicted`: A flag indicating whether the computer vision system is predicting this Track Head and not directly observing it. For example, may be set `true` if an object is temporarily occluded by another object passing in-front of it - causing the sensor to momentarily lose sight of it.
+- `last_detected_timestamp_microseconds`: if `is_predicted` is `true`, this is the timestamp of the previous non-predicted detection of the object.
+- `occupancy_zone_id`: a list of the zones that the object is currently within.
+- `countline_crossings`: a list of the countlines that the track has crossed since it was first instantiated.
+- `frame_time_microseconds`
+
+## Use cases
