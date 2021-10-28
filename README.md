@@ -99,6 +99,34 @@ Key fields:
 - `is_stopped`: flag which is set true when the object is deemed to have stopped moving.
 - `movement`: message containing data on the movement of the detected object (speeds, directions etc). See below.
 - `track_class`: The classification of the detected object.
+- `directional_occupancy_zone_id`: a list of the zones that the object is currently within, AND travelling within a configurable threshold of the zone's "direction". See below for more details . Zone IDs are globally unique.
+- `contra_directional_occupancy_zone_id`: as for `directional_occupancy_zone_id`, except track is moving in the opposite direction to the zone's.
+
+
+#### Notes on Directional Zonal Occupancy:
+The primary use case for directional occupancy is where only objects moving in a certain diection are to be considered by the message consumer. Examples of this include:
+- A vehicle approach to a stopline. Only traffic moving toward the stopline should be considered as "demand" for a phase. Vehicles driving away from the junction which overtake a parked car and stray into the approach lane are filtered out since they are travelling in a direction opposite to the zone's direction.
+- A cycle lane with 2 sub-lanes (for travelling toward and away from a cycle crossing). Cyclists that stray over the centre line when cycling away from the junction should not trigger a demand for a cycle crossing.
+
+By default, a zone's "direction" shall be defined as a vector from its centroid to the first vertex defined in its outline geometry. The image below shows the zone directions for 2 zones drawn according to this logic.
+The cross is the centroid, the green circle is the 1st point in the zone's geometry (in this case drawn at the "front" of the zone with repect to the cycle crossing, which is out of view to the bottom of the image). The red arrow is the zone's direction.
+![point](docs/images/zone-direction.png?raw=true)
+
+
+The angle between the track's direction and the zone direction is used to determine whether an object is moving in the zone's "direction". 
+
+![point](docs/images/zone-direction-track-direction.png?raw=true)
+
+By default if the direction of the object is within 90 degrees of the zone's direction, the zone id will be added to `directional_occupancy_zone_id`.
+
+This threshold angle is adjustable. Setting a small angle <90 degrees means an object must be travelling in a direction closer to the zone's direction before contributing to the directional zonal occupancy.
+
+In the image below, tracks in the blue zone contribute to directional occupancy. Tracks in the green zone contribute to contra-directional occupancy. 
+
+![point](docs/images/contra-directional.png?raw=true)
+
+For moving objects, a short-term average direction (eg averaged over several seconds) is compared against the zone direction.
+For stopped objects, the lifespan track direction is compared to the zone direction.
 
 ### Detection Box
 A message containing information about the position of the detected object.
@@ -138,6 +166,8 @@ Key fields:
 See *Countline Crossings* for description of crossing direction logic.
 - `aggregated_stopped_vehicles_count`: total number of stopped objects within the zone - aggregated across all detection classes.
 - `average_movement`: *Movement* message containing an average across all objects within the zone. 
+- `aggregated_directional_occupancy`: total number of detected objects within the zone, aggregated across all classes, which are travelling within a calibrated threshold of the zone's direction.
+- `aggregated_contra_directional_occupancy`: as above, but for objects travelling opposite to the zone's direction. 
 
 ### Class Features
 Used to encode date on a per-class basis in a ZonalFeatures message.
@@ -147,6 +177,8 @@ Used to encode date on a per-class basis in a ZonalFeatures message.
 - `crossings_anticlockwise`: number of crossings of countlines for objects of this `class_type` that have occurred within the zone in the anitclockwise direction, since the previous message.
 - `stopped_vehicles_count`: total number of stopped objects of this `class_type` within the zone.
 - `average_movement`: *Movement* message containing an average across all objects of this `class_type` within the zone. 
+- `directional_occupancy`: the total number of objects of this class within the zone, which are travelling within a configurable threshold of the zone's direction
+- `contra_directional_occupancy`: as above, but for objects travelling opposite to the zone's direction.
 
 ### Countline Crossing
 A message to communicate a tracked object crossing from one side of a 2D "countline" to the other.
