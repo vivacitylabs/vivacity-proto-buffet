@@ -25,5 +25,5 @@ PROTO_FOLDERS=($(find ${GENERATED_FOLDER} -type f -name "*.proto" -exec dirname 
 for PROTO_FOLDER in "${PROTO_FOLDERS[@]}"
 do
     echo $PROTO_FOLDER
-    protoc -I=$PROTOBUFFET_FOLDER --go_opt=paths=source_relative --go_out=plugins=grpc:$PROTOBUFFET_FOLDER ${PROTO_FOLDER}/*.proto
+    protoc -I=$PROTOBUFFET_FOLDER --go_opt=paths=source_relative --go_out=$PROTOBUFFET_FOLDER --go-grpc_out=$PROTOBUFFET_FOLDER --go-grpc_opt=paths=source_relative ${PROTO_FOLDER}/*.proto
 done

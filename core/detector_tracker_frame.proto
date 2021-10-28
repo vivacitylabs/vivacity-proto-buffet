@@ -44,6 +44,9 @@ message TrackHead {  // TrackedBox
     Movement movement = 10;
     core.ClassifyingDetectorClassTypes track_class = 11;
     reserved 12;
+    reserved 14 to 23;
+    repeated uint32 directional_occupancy_zone_id = 24;
+    repeated uint32 contra_directional_occupancy_zone_id = 25;
 }
 
 message DetectorTrackerFrame {

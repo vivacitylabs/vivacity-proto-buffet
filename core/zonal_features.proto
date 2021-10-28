@@ -5,7 +5,6 @@ option go_package = "github.com/vivacitylabs/vivacity-proto-buffet/vivacity/core
 
 import "vivacity/core/classifying_detector_class_types.proto";
 import "vivacity/core/tracing_context.proto";
-import "vivacity/core/vector.proto";
 import "vivacity/core/movement.proto";
 
 message ZonalFeatures {
@@ -21,6 +20,9 @@ message ZonalFeatures {
     uint32 aggregated_stopped_vehicles_count = 11; // aggregate across all classes
     core.Movement average_movement = 12; // aggregate across all classes
     core.TracingContext tracing_ctx = 5; // 5 to be backwards compatible
+    reserved 13;
+    uint32 aggregated_directional_occupancy = 14; // aggregate across all classes
+    uint32 aggregated_contra_directional_occupancy = 15; // aggregate across all classes
 }
 
 message ClassFeatures {
@@ -32,4 +34,7 @@ message ClassFeatures {
     reserved 6; // deprecated, use average_movement
     uint32 stopped_vehicles_count = 7; // aggregate for class
     core.Movement average_movement = 8; // aggregate for class
+    reserved 9;
+    uint32 directional_occupancy = 10; // aggregate for class
+    uint32 contra_directional_occupancy = 11; // aggregate for class
 }
