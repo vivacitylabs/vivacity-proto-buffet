@@ -61,6 +61,13 @@ This should generate a folder called `vivacity` with the `*.proto` files and gen
 * `ts-protoc-gen` >= 0.12.0
     * **Required**. Install with `yarn add ts-protoc-gen`
 
+## Example Protobuf Message Sender and Receiver
+An example C application to receive and decode dummy `DetectorTrackerFrame`s is available at the link below. This application is intended to assist users of this message schema who wish to update their hardware (eg traffic signal controllers) to receive Vivacity protobuf messages.
+
+Also included is an application to send dummy messages to the receiver application. 
+
+https://github.com/vivacitylabs/vivacity_occupancy_example
+
 ## Vivacity Message Schema
 ![alt text](docs/images/dtf.png "Detector tracker frame message structure")
 
