@@ -212,11 +212,15 @@ Messages and fields sent:
     │   ├── class_features [repeated]
     │   │   ├── class_type
     │   │   ├── occupancy
+    │   │   ├── directional_occupancy
+    │   │   ├── contra_directional_occupancy
     │   │   ├── stopped_vehicles_count    
     │   ├── aggregated_occupancy
+    │   ├── aggregated_directional_occupancy
+    │   ├── aggregated_contra_directional_occupancy
     └── └── aggregated_stopped_vehicles_count
 ```
-Phyiscal and Transport layers: DTFs are sent via TCP connection over an ethernet network. Messages are sent at a fixed rate of 10Hz.
+Phyiscal and Transport layers: DTFs are sent via UDP frames over an ethernet network. Messages are sent at a fixed rate of 10Hz.
 
 Zones are configured for:
 - pedestrian waiting areas
@@ -226,6 +230,8 @@ Zones are configured for:
 - vehicle approaches
 
 The traffic signal controller receives the data and uses the classified occupancy values to determine signal timings, eg: hold the "green man" while there is a non-zero pedestrian occupancy in the on-crossing zone, or insert a demand for a cyclist phase if cyclists are detected approaching the junction. Use of `stopped_vehicles_count` for pedestrian zones allows the controller to only consider pedestrians waiting to cross, rather than those simply passing through a waiting area. 
+
+By considering "directional occupancy", it's possible to filter out vehicles/cyclists that are inside a detection zone but not travelling toward the junction.
 
 ### Use Case 2: Sensors mounted above signal heads, send real-time GPS locations to a central algorithm, via a council-owned ethernet network and fibre backhaul
 
