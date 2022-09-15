@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package vivacity.core;
+option go_package = "github.com/vivacitylabs/vivacity-proto-buffet/vivacity/core";
+
+import "vivacity/core/classifying_detector_class_types.proto";
+import "vivacity/core/tracing_context.proto";
+
+message ZonalWindowedClassFeatures {
+    core.ClassifyingDetectorClassTypes class_id = 1;
+    float mean_number_objects = 2;
+    float mean_number_stopped_objects = 3;
+    float mean_real_world_space_speed_meters_per_second = 4;
+    float mean_image_space_speed_points_per_second = 5;
+    float mean_cumulative_stopped_seconds = 6;
+    uint32 max_number_objects = 7;
+}
+
+message ZonalWindowedFeatures {
+    uint32 zone_id = 1;
+    uint32 vision_program_id = 2;
+    uint64 window_start_timestamp_microseconds = 3;
+    uint32 window_length_microseconds = 4;
+    repeated ZonalWindowedClassFeatures class_features = 5;
+    core.TracingContext tracing_ctx = 6;
+    repeated ZonalWindowedClassFeatures directional_class_features = 7;
+    repeated ZonalWindowedClassFeatures contra_directional_class_features = 8;
+    ZonalWindowedClassFeatures aggregated_features = 9; //aggregated across all classes
+    ZonalWindowedClassFeatures aggregated_directional_features = 10; //aggregated across all classes
+    ZonalWindowedClassFeatures aggregated_contra_directional_features = 11; //aggregated across all classes
+    uint32 aggregated_crossings_clockwise = 12;
+    uint32 aggregated_crossings_anticlockwise = 13;
+}

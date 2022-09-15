@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package vivacity.core;
+option go_package = "github.com/vivacitylabs/vivacity-proto-buffet/vivacity/core";
+
+import "vivacity/core/tracing_context.proto";
+import "vivacity/core/zonal_windowed_features.proto";
+import "vivacity/core/countline_windowed_features.proto";
+
+message VisionProgramWindowedFeatures {
+    uint32 vision_program_id = 1; //populate at this level and not in inner messages
+    core.TracingContext tracing_ctx = 2;
+    uint64 window_start_timestamp_microseconds = 3; //populate at this level and not in inner messages
+    uint32 window_length_microseconds = 4; //populate at this level and not in inner messages
+    repeated ZonalWindowedFeatures zonal_windowed_features = 5; //populate only class_features or aggregated_features
+    repeated CountlineWindowedFeatures countline_windowed_features = 6; //populate only class_features or aggregated_features
+    uint64 message_creation_timestamp_microseconds = 7;
+}
+

@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package vivacity.core;
+option go_package = "github.com/vivacitylabs/vivacity-proto-buffet/vivacity/core";
+
+import "vivacity/core/classifying_detector_class_types.proto";
+import "vivacity/core/tracing_context.proto";
+
+message CountlineWindowedClassFeatures {
+  core.ClassifyingDetectorClassTypes class_id = 1;
+  uint32 number_crossings = 2;
+  float mean_real_world_space_speed_meters_per_second = 3;
+  float mean_image_space_speed_points_per_second = 4;
+}
+
+message CountlineWindowedFeatures {
+  uint32 countline_id = 1;
+  uint32 vision_program_id = 2;
+  uint64 window_start_timestamp_microseconds = 3;
+  uint32 window_length_microseconds = 4;
+  repeated CountlineWindowedClassFeatures class_features_clockwise = 5;
+  repeated CountlineWindowedClassFeatures class_features_anticlockwise = 6;
+  CountlineWindowedClassFeatures aggregated_features_clockwise = 7; //aggregated across all classes
+  CountlineWindowedClassFeatures aggregated_features_anticlockwise = 8; //aggregated across all classes
+  core.TracingContext tracing_ctx = 9;
+}
