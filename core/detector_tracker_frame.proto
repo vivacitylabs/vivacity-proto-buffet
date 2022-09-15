@@ -7,7 +7,6 @@ import "vivacity/core/point.proto";
 import "vivacity/core/tracing_context.proto";
 import "vivacity/core/classifying_detector_class_types.proto";
 import "vivacity/core/countline_crossing.proto";
-import "vivacity/core/vector.proto";
 import "vivacity/core/movement.proto";
 import "vivacity/core/zonal_features.proto";
 
