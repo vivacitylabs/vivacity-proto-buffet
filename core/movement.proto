@@ -14,6 +14,17 @@ message Movement {
 
     // sum(displacements) / (latest - earliest frame time seconds)
     Displacements long_term_average = 4;
+
+    // sum(displacements) / (latest - first frame time seconds)
+    Displacements track_average = 5;
+
+    // the sum along the length of the track from tail to head (no time dependency)
+    // the magnitude is the total distance travelled.
+    // The X and Y components are the total distances travelled in X and Y directions
+    Displacements track_total_distance_travelled = 6;
+
+    // the vector from the track tail to the track head (no time dependency)
+    Displacements total_vector_displacement = 7;
 }
 
 message Displacements {

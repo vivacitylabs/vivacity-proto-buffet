@@ -9,6 +9,7 @@ import "vivacity/core/tracing_context.proto";
 message ClassOccupancy {
   core.ClassifyingDetectorClassTypes class_id = 1;
   float mean_number_objects = 2;
+  float mean_number_stopped_objects = 3;
 }
 
 message ZonalWindowedOccupancy {
@@ -16,7 +17,7 @@ message ZonalWindowedOccupancy {
   reserved 2;
   uint64 window_start_timestamp_microseconds = 3;
   uint32 window_length_microseconds = 4;
-  repeated ClassOccupancy occupancies = 5;
+  repeated ClassOccupancy class_occupancies = 5;
 
   core.TracingContext tracing_ctx = 6;
 }

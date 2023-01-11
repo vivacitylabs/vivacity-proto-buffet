@@ -15,14 +15,21 @@ message ZonalFeatures {
     uint32 aggregated_occupancy = 6; // aggregate across all classes
     uint32 aggregated_crossings_clockwise = 7; // aggregate across all classes
     uint32 aggregated_crossings_anticlockwise = 8; // aggregate across all classes
-    reserved 9; // deprecated, use average_movement
-    reserved 10; // deprecated, use average_movement
+    reserved 9; // deprecated
+    reserved 10; // deprecated
     uint32 aggregated_stopped_vehicles_count = 11; // aggregate across all classes
     core.Movement average_movement = 12; // aggregate across all classes
     core.TracingContext tracing_ctx = 5; // 5 to be backwards compatible
     reserved 13;
     uint32 aggregated_directional_occupancy = 14; // aggregate across all classes
     uint32 aggregated_contra_directional_occupancy = 15; // aggregate across all classes
+    uint32 aggregated_stopped_directional_vehicles_count = 16; // aggregate for class
+    uint32 aggregated_stopped_contra_directional_vehicles_count = 17; // aggregate for class
+    reserved 18;
+    reserved 19;
+    uint32 aggregated_cumulative_stopped_microseconds = 20; // aggregate across all classes
+    uint32 aggregated_cumulative_stopped_directional_microseconds = 21; // aggregate across all classes
+    uint32 aggregated_cumulative_stopped_contra_directional_microseconds = 22; // aggregate across all classes
 }
 
 message ClassFeatures {
@@ -30,11 +37,19 @@ message ClassFeatures {
     uint32 occupancy = 2; // aggregate for class
     uint32 crossings_clockwise = 3; // aggregate for class
     uint32 crossings_anticlockwise = 4; // aggregate for class
-    reserved 5; // deprecated, use average_movement
-    reserved 6; // deprecated, use average_movement
+    reserved 5; // deprecated
+    reserved 6; // deprecated
     uint32 stopped_vehicles_count = 7; // aggregate for class
     core.Movement average_movement = 8; // aggregate for class
     reserved 9;
     uint32 directional_occupancy = 10; // aggregate for class
     uint32 contra_directional_occupancy = 11; // aggregate for class
+    uint32 stopped_directional_vehicles_count = 12; // aggregate for class
+    uint32 stopped_contra_directional_vehicles_count = 13; // aggregate for class
+    reserved 14;
+    reserved 15;
+    uint32 cumulative_stopped_microseconds = 16; // aggregate for class
+    uint32 cumulative_stopped_directional_microseconds = 17; // aggregate for class
+    uint32 cumulative_stopped_contra_directional_microseconds = 18; // aggregate for class
 }
+

@@ -17,7 +17,7 @@ message ZonalWindowedSpeed {
   reserved 2;
   uint64 window_start_timestamp_microseconds = 3;
   uint32 window_length_microseconds = 4;
-  repeated ClassSpeed speeds = 5;
+  repeated ClassSpeed class_speeds = 5;
 
   core.TracingContext tracing_ctx = 6;
 }
