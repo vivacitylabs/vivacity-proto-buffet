@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package vivacity.core;
+option go_package = "github.com/vivacitylabs/vivacity-proto-buffet/vivacity/core";
+
+import "vivacity/core/classifying_detector_class_types.proto";
+import "vivacity/core/point.proto";
+
+message FootprintEstimate3d {
+    core.Point front_center_ground_plane = 1; // derived by projection
+    core.Point front_left_ground_plane = 2; // derived by projection
+    core.Point front_right_ground_plane = 3; // derived by projection
+    core.Point back_center_ground_plane = 4; // derived by projection
+    core.Point back_left_ground_plane = 5; // derived by projection
+    core.Point back_right_ground_plane = 6; // derived by projection
+}
+
+message PoseEstimate3d {
+    core.Point center = 1; // 3d centroid of cuboid
+    core.Point front = 2;  // front face of cuboid, center center
+    core.Point left = 3;   // left face of cuboid, center center
+    core.Point top = 4;    // top face of cuboid, center center
+    core.Point back = 5;   // back face of cuboid, center center
+    core.Point right = 6;  // right face of cuboid, center center
+    core.Point bottom = 7; // bottom face of cuboid, center center (i.e. center_center_ground_plane)
+    FootprintEstimate3d footprint = 8;
+}
+
+message DetectionBox { // LabelBox
+    core.Point top_left = 1; // required
+    core.Point bottom_right = 2; // required
+    core.ClassifyingDetectorClassTypes detection_class = 3; // required
+    string hashed_anpr_plate = 5;
+    string anpr_plate = 10;
+    core.Point center_center = 6;
+    core.Point bottom_center = 7;
+    core.Point license_plate_center_center = 8;
+    repeated core.Point occupancy_zone_points = 9;
+    map<string, core.Point> custom_points = 16;
+    core.Point top_right = 17;
+    core.Point bottom_left = 18;
+    PoseEstimate3d pose_estimate_3d = 19;;
+    reserved 31;
+}

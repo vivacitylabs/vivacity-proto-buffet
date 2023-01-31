@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package vivacity.core;
+option go_package = "github.com/vivacitylabs/proto-buffet/vivacity/core";
+
+import "vivacity/core/classifying_detector_class_types.proto";
+import "vivacity/core/countline_crossing.proto";
+import "vivacity/core/detection_box.proto";
+import "vivacity/core/movement.proto";
+
+
+message TrackHead { // TrackedBox
+    core.DetectionBox detection_box = 1; // required
+    uint32 track_number = 2; // required
+    bool is_predicted = 3;
+    bool is_tracked = 13; // tracker now outputs includes not-yet-tracked things, where this would be false
+    uint64 last_detected_timestamp_microseconds = 4; // Only used when is_predicted is true
+    repeated uint32 occupancy_zone_id = 5;
+    repeated core.CountlineCrossing countline_crossings = 6; // optional
+    uint64 frame_time_microseconds = 7; // optional
+    reserved 8; // deprecated, use movement messages below
+    bool is_stopped = 9;
+    Movement movement = 10;
+    core.ClassifyingDetectorClassTypes track_class = 11;
+    reserved 12;
+    reserved 14 to 23;
+    repeated uint32 directional_occupancy_zone_id = 24;
+    repeated uint32 contra_directional_occupancy_zone_id = 25;
+    reserved 26;
+    reserved 27;
+    uint32 cumulative_stopped_microseconds = 28;
+    map<uint32, uint32>  cumulative_stopped_microseconds_by_zone_id = 29;
+    reserved 30;
+    reserved 31;
+    map<uint32, uint32>  cumulative_stopped_directional_microseconds_by_zone_id = 32;
+    map<uint32, uint32>  cumulative_stopped_contra_directional_microseconds_by_zone_id = 33;
+    reserved 34;
+
+}
+
