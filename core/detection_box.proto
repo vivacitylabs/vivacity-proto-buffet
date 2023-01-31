@@ -39,6 +39,6 @@ message DetectionBox { // LabelBox
     map<string, core.Point> custom_points = 16;
     core.Point top_right = 17;
     core.Point bottom_left = 18;
-    reserved 19;
+    PoseEstimate3d pose_estimate_3d = 19;;
     reserved 31;
 }

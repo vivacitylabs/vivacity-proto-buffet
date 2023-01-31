@@ -26,7 +26,15 @@ message TrackHead { // TrackedBox
     reserved 14 to 23;
     repeated uint32 directional_occupancy_zone_id = 24;
     repeated uint32 contra_directional_occupancy_zone_id = 25;
-    reserved 26 to 34;
+    reserved 26;
+    reserved 27;
+    uint32 cumulative_stopped_microseconds = 28;
+    map<uint32, uint32>  cumulative_stopped_microseconds_by_zone_id = 29;
+    reserved 30;
+    reserved 31;
+    map<uint32, uint32>  cumulative_stopped_directional_microseconds_by_zone_id = 32;
+    map<uint32, uint32>  cumulative_stopped_contra_directional_microseconds_by_zone_id = 33;
+    reserved 34;
 
 }
 

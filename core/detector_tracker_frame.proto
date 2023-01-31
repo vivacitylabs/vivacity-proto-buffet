@@ -28,6 +28,7 @@ message DetectorTrackerFrame {
     repeated AssembledTrack track_tails = 12;
     reserved 13;
     repeated TrackHead track_terminations = 15;
+    reserved 16;
 }
 
 message FragmentedDetectorTrackerFrame {

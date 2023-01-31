@@ -6,12 +6,14 @@ option go_package = "github.com/vivacitylabs/vivacity-proto-buffet/vivacity/core
 import "vivacity/core/classifying_detector_class_types.proto";
 import "vivacity/core/tracing_context.proto";
 
+//deprecated (ZonalFeatures now used)
 message ClassOccupancy {
   core.ClassifyingDetectorClassTypes class_id = 1;
   float mean_number_objects = 2;
   float mean_number_stopped_objects = 3;
 }
 
+//deprecated (ZonalFeatures now used)
 message ZonalWindowedOccupancy {
   uint32 zone_id = 1;
   reserved 2;
