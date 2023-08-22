@@ -141,7 +141,8 @@ A message containing information about the position of the detected object.
 Note that the `Point` message is used repeatedly within this message, and may encode the location in either image space or real (GPS) space.
 
 Key fields:
-- `top_left`, `bottom_right`, `center_center`, `center_center`, `top_right`, `bottom_left`: the locations of the various points of the detection box containing the object.
+- `top_left`, `bottom_right`, `center_center`, `center_center`, `top_right`, `bottom_left`: the locations of the various points of the 2D detection box containing the object.
+- `bottom_center`, `bottom`: key locations on the estimated footprint of the object as a 3D cuboid. More accurately models the object's position in space versus the 2D box points.
 - `detection_class`: the classification of the object. Note that if this `DetectionBox` message is within a TrackHead, this will be the same as the `track_class` from the outer message.
 - `occupancy_zone_points`: points which are located within a detection box which are used to determine whether a detected object counts as "within" a zone or not. Eg: 6 points located in the lower half of a vechicle's detection box, 4 of which must be within a zone to contribute to that zone's occupancy.
 - `hashed_anpr_plate`:  hashed contents of a license plate.
@@ -220,7 +221,7 @@ Messages and fields sent:
     │   ├── aggregated_contra_directional_occupancy
     └── └── aggregated_stopped_vehicles_count
 ```
-Phyiscal and Transport layers: DTFs are sent via UDP frames over an ethernet network. Messages are sent at a fixed rate of 10Hz.
+Physical and Transport layers: DTFs are sent via UDP frames over an ethernet network. Messages are sent at a fixed rate of 10Hz.
 
 Zones are configured for:
 - pedestrian waiting areas
